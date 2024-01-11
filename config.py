@@ -1,0 +1,10 @@
+BOT_TOKEN = "6985736328:AAF0jlFuAGKKugJ-aAK6XCA5msQ7DMDO3tY"
+ADMINS = [941535008]
+DB_USER = 'postgresql'
+DB_PASSWORD = '1'
+DB_HOST = 'localhost'
+DB_PORT = 5432
+DB_NAME = 'sof_db'
+
+
+
