@@ -5,6 +5,4 @@ DB_PASSWORD = '1'
 DB_HOST = 'localhost'
 DB_PORT = 5432
 DB_NAME = 'sof_db'
-
-
-
+ISHCHI = []
