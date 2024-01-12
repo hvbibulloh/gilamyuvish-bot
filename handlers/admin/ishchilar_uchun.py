@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ContentTypes
 
-from keyboard.admin.admin_keys import admin_exit, ishchilar_keyboard
+from keyboard.admin.admin_keys import admin_exit, ishchilar_keyboard, register_keyboard
 from loader import bot, dp
 from aiogram.dispatcher.filters.state import State, StatesGroup
 import config as cfg
@@ -11,6 +11,10 @@ import config as cfg
 class RegisterStates(StatesGroup):
     full_name = State()
     phone_number = State()
+    gilam = State()
+    parda = State()
+    yostiq = State()
+    korpa = State()
     address = State()
 
 
@@ -52,27 +56,94 @@ async def phone_number(message: types.Message, state: FSMContext):
             async with state.proxy() as data:
                 data['phone_number'] = message.text
 
-            await RegisterStates.address.set()
-            await message.answer("Mijozning manzilini kiriting !", reply_markup=admin_exit)
+            await RegisterStates.gilam.set()
+            await message.answer("Gilamlar sonini kiriting \n❗(Agar mavjud bo'lmasa <O'tkazib yuborish> ni bosing)",
+                                 reply_markup=register_keyboard)
 
     except:
         await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)
 
 
-@dp.message_handler(state=RegisterStates.address, content_types=types.ContentTypes.TEXT)
-async def address(message: types.Message, state: FSMContext):
+@dp.message_handler(state=RegisterStates.gilam, content_types=types.ContentTypes.TEXT)
+async def register_gilam(message: types.Message, state: FSMContext):
     try:
         if message.text == 'Chiqish':
-            await message.answer('Bosh menuga qaytdingiz ! ✅', reply_markup=ishchilar_keyboard)
+            await message.answer('Bosh menugaq qaytdingiz ! ✅', reply_markup=ishchilar_keyboard)
             await state.finish()
+
+        elif message.text == "O'tkazib yuborish":
+            await message.answer("Pardalar sonini kiriting \n❗(Agar mavjud bo'lmasa <O'tkazib yuborish> ni bosing)")
+            await RegisterStates.next()
 
         else:
             async with state.proxy() as data:
-                data['address'] = message.text
+                data['gilam'] = message.text
 
-            await message.answer("Mijoznin")
+            await RegisterStates.parda.state()
+            await message.answer("Pardalar sonini kiriting \n❗(Agar mavjud bo'lmasa <O'tkazib yuborish> ni bosing)",
+                                 reply_markup=ishchilar_keyboard)
+
 
     except:
         await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)
+
+
+@dp.message_handler(state=RegisterStates.parda, content_types=types.ContentTypes.TEXT)
+async def register_parda(message: types.Message, state: FSMContext):
+    try:
+        if message.text == 'Chiqish':
+            await message.answer('Bosh menugaq qaytdingiz ! ✅', reply_markup=ishchilar_keyboard)
+            await state.finish()
+
+        elif message.text == "O'tkazib yuborish":
+            await message.answer("Yostiqlar sonini kiriting \n❗(Agar mavjud bo'lmasa <O'tkazib yuborish> ni bosing)")
+            await RegisterStates.next()
+
+        else:
+            async with state.proxy() as data:
+                data['yostiq'] = message.text
+
+            await RegisterStates.yostiq.set()
+            await message.answer("Yostiqlar sonini kiriting \n❗(Agar mavjud bo'lmasa <O'tkazib yuborish> ni bosing)",
+                                 reply_markup=ishchilar_keyboard)
+    except:
+        await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)
+
+
+@dp.message_handler(state=RegisterStates.yostiq, content_types=types.ContentTypes.TEXT)
+async def register_yostiq(message: types.Message, state: FSMContext):
+    try:
+        if message.text == 'Chiqish':
+            await message.answer('Bosh menugaq qaytdingiz ! ✅', reply_markup=ishchilar_keyboard)
+            await state.finish()
+
+        elif message.text == "O'tkazib yuborish":
+            await message.answer("Ko'rpalar sonini kiriting \n❗(Agar mavjud bo'lmasa <O'tkazib yuborish> ni bosing)")
+            await RegisterStates.next()
+
+        else:
+            async with state.proxy() as data:
+                data['yostiq'] = message.text
+
+            await RegisterStates.korpa.set()
+            await message.answer("Ko'rpalar sonini kiriting \n❗(Agar mavjud bo'lmasa <O'tkazib yuborish> ni bosing)",
+                                 reply_markup=ishchilar_keyboard)
+
+    except:
+        await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)
+
+@dp.message_handler(state=RegisterStates.korpa, content_types=ContentTypes.TEXT)
+async def korpa_text(message: types.Message, state: FSMContext):
+    try:
+        if message.text == "Chiqish":
+            await message.answer('Bosh menugaq qaytdingiz ! ✅', reply_markup=ishchilar_keyboard)
+            await state.finish()
+
+        elif message.text == "O'tkazib yuborish":
+            await message.answer("Yostiqlar sonini kiriting \n❗(Agar mavjud bo'lmasa <O'tkazib yuborish> ni bosing)")
+            await RegisterStates.next()
+        else:
+            async with state.proxy() as data:
+                data['yostiq'] = message.text
 
 

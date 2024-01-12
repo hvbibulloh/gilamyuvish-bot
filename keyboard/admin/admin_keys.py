@@ -15,3 +15,12 @@ ishchilar_keyboard = ReplyKeyboardMarkup(
         ]
     ]
 )
+
+register_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton("O'tkazib yuborish"),
+            KeyboardButton("Chiqish")
+        ]
+    ]
+)
