@@ -5,7 +5,7 @@ admin_exit = ReplyKeyboardMarkup(
         [
             KeyboardButton('Chiqish')
         ]
-    ]
+    ], resize_keyboard=True
 )
 
 ishchilar_keyboard = ReplyKeyboardMarkup(
@@ -13,7 +13,7 @@ ishchilar_keyboard = ReplyKeyboardMarkup(
         [
             KeyboardButton("Ro'yxatga olish 📝")
         ]
-    ]
+    ], resize_keyboard=True
 )
 
 register_keyboard = ReplyKeyboardMarkup(
@@ -22,5 +22,5 @@ register_keyboard = ReplyKeyboardMarkup(
             KeyboardButton("O'tkazib yuborish"),
             KeyboardButton("Chiqish")
         ]
-    ]
+    ], resize_keyboard=True
 )

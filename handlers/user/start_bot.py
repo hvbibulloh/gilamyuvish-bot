@@ -16,7 +16,7 @@ async def startbot(message: types.Message):
             f"Assalomu Aleykum {message.from_user.full_name} \n\nSoat: {current_time.hour}:{current_time.minute}\nKuningiz yaxshi o'tsin ☺",
             reply_markup=ishchilar_keyboard)
 
-    if message.from_user.id in cfg.ADMINS:
+    elif message.from_user.id in cfg.ADMINS:
         await message.answer('HEllo brat')
 
     else:
