@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import ContentTypes
 
 from keyboard.admin.admin_keys import admin_exit, ishchilar_keyboard, register_keyboard
-from loader import bot, dp
+from loader import bot, dp, db
 from aiogram.dispatcher.filters.state import State, StatesGroup
 import config as cfg
 import re
@@ -84,6 +84,9 @@ async def register_gilam(message: types.Message, state: FSMContext):
             await state.finish()
 
         elif message.text == "O'tkazib yuborish":
+            async with state.proxy() as data:
+                data['gilam'] = None
+
             await message.answer(
                 "Pardalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
@@ -112,6 +115,8 @@ async def register_parda(message: types.Message, state: FSMContext):
             await state.finish()
 
         elif message.text == "O'tkazib yuborish":
+            async with state.proxy() as data:
+                data['parda'] = None
             await message.answer(
                 "Yostiqlar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
@@ -137,6 +142,8 @@ async def register_yostiq(message: types.Message, state: FSMContext):
             await state.finish()
 
         elif message.text == "O'tkazib yuborish":
+            async with state.proxy() as data:
+                data['yostiq'] = None
             await message.answer(
                 "Ko'rpalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
@@ -163,6 +170,8 @@ async def korpa_text(message: types.Message, state: FSMContext):
             await state.finish()
 
         elif message.text == "O'tkazib yuborish":
+            async with state.proxy() as data:
+                data['korpa'] = None
             await message.answer("Mijoz manzilini kiriting ", reply_markup=admin_exit)
             await RegisterStates.next()
         else:
@@ -185,11 +194,19 @@ async def address(message: types.Message, state: FSMContext):
 
         else:
             async with state.proxy() as data:
-                data['address'] = message.text
+                fullname = data['full_name']
+                phone_n = data['phone_number']
+                gilam = data['gilam']
+                parda = data['parda']
+                yostiq = data['yostiq']
+                korpa = data['korpa']
+                addres = message.text
 
-            await message.answer("Malumotlar saqlandi", reply_markup=ishchilar_keyboard)
+            db.add_mijoz(fullname, phone_n, gilam, parda, yostiq, korpa, addres)
+            await message.answer("Malumotlar saqlandi ✅", reply_markup=ishchilar_keyboard)
+            await state.finish()
 
-
-
-    except:
-        await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)
+    except Exception as e:
+        print(f"Xatolik: {e}")
+        await message.answer("Xatolik yuz berdi, ma'lumotlar saqlanmadi ⚠️", reply_markup=ishchilar_keyboard)
+        await state.finish()

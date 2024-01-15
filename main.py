@@ -2,7 +2,7 @@ from aiogram.utils import executor
 from utils.set_command import set_default_commands
 from utils.adminstart import on_startup_notify
 from loader import dp
-import handlers
+import handlers, keyboard, states, utils
 
 
 async def startup(dispatcher):

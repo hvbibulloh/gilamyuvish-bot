@@ -2,16 +2,25 @@ import psycopg2
 
 
 class Database():
-    def __init__(self, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME):
+    def __init__(self, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT):
         self.connection = psycopg2.connect(
             dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST, port=DB_PORT
         )
         self.cursor = self.connection.cursor()
 
-    def user_exists(self, user_id):
+    def mijoz_exists(self, phone_number):
         with self.connection:
-            self.cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
+            self.cursor.execute("SELECT * FROM mijoz WHERE phone_number = %s", (phone_number,))
             result = self.cursor.fetchall()
             return result
 
-
+    def add_mijoz(self, first_name, phone_number, gilam=None, parda=None, yostiq=None, korpa=None, adress=None):
+        try:
+            self.cursor.execute(
+                "INSERT INTO mijoz (first_name, phone_number, gilam, parda, yostiq, korpa, adress) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (first_name, phone_number, gilam, parda, yostiq, korpa, adress),
+            )
+            self.connection.commit()
+        except Exception as e:
+            print(f"Error: {e}")
+            self.connection.rollback()
