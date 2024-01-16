@@ -40,7 +40,7 @@ async def full_name(message: types.Message, state: FSMContext):
                 data['full_name'] = message.text
 
             await RegisterStates.phone_number.set()
-            await message.answer("Mijoz telefon raqamini kiriting !", reply_markup=admin_exit)
+            await message.answer("📱 Mijoz telefon raqamini kiriting \n(+998991234567 manashu formatda bo'lsin)!", reply_markup=admin_exit)
 
     except:
         await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)
@@ -66,7 +66,7 @@ async def phone_numbers(message: types.Message, state: FSMContext):
                 data['phone_number'] = phone_number
 
                 await message.answer(
-                    "Gilamlar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
+                    "🧺 Gilamlar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                     reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
                 await RegisterStates.gilam.set()
 
@@ -88,7 +88,7 @@ async def register_gilam(message: types.Message, state: FSMContext):
                 data['gilam'] = None
 
             await message.answer(
-                "Pardalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
+                "🎏 Pardalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
 
             await RegisterStates.next()
@@ -99,7 +99,7 @@ async def register_gilam(message: types.Message, state: FSMContext):
 
             await RegisterStates.parda.set()
             await message.answer(
-                "Pardalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
+                "🎏 Pardalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
 
 
@@ -118,7 +118,7 @@ async def register_parda(message: types.Message, state: FSMContext):
             async with state.proxy() as data:
                 data['parda'] = None
             await message.answer(
-                "Yostiqlar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
+                "🛏 Yostiqlar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
             await RegisterStates.next()
 
@@ -128,7 +128,7 @@ async def register_parda(message: types.Message, state: FSMContext):
 
             await RegisterStates.yostiq.set()
             await message.answer(
-                "Yostiqlar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
+                "🛏 Yostiqlar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
     except:
         await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)
@@ -145,7 +145,7 @@ async def register_yostiq(message: types.Message, state: FSMContext):
             async with state.proxy() as data:
                 data['yostiq'] = None
             await message.answer(
-                "Ko'rpalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
+                "🛌 Ko'rpalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
             await RegisterStates.next()
 
@@ -155,7 +155,7 @@ async def register_yostiq(message: types.Message, state: FSMContext):
 
             await RegisterStates.korpa.set()
             await message.answer(
-                "Ko'rpalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
+                "🛌 Ko'rpalar sonini kiriting \n‼(Agar mavjud bo'lmasa O'tkazib yuborish ni bosing)",
                 reply_markup=register_keyboard, parse_mode=types.ParseMode.HTML)
 
     except:
@@ -179,7 +179,7 @@ async def korpa_text(message: types.Message, state: FSMContext):
                 data['korpa'] = message.text
 
             await RegisterStates.address.set()
-            await message.answer("Mijoz manzilini kiriting ‼", reply_markup=admin_exit)
+            await message.answer("📍 Mijoz manzilini kiriting ‼", reply_markup=admin_exit)
 
     except:
         await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)

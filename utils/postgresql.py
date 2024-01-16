@@ -24,3 +24,14 @@ class Database():
         except Exception as e:
             print(f"Error: {e}")
             self.connection.rollback()
+
+    def get_mijoz(self, id):
+        try:
+            self.cursor.execute(
+                "SELECT gilam FROM mijoz WHERE id = %s", (id,)
+            )
+            result = self.cursor.fetchone()
+            return result[0] if result else None
+        except Exception as e:
+            print(f"Error: {e}")
+            return None

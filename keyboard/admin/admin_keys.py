@@ -11,7 +11,8 @@ admin_exit = ReplyKeyboardMarkup(
 ishchilar_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton("Ro'yxatga olish 📝")
+            KeyboardButton("Ro'yxatga olish 📝"),
+            KeyboardButton("Yuvish 🚿")
         ]
     ], resize_keyboard=True
 )
@@ -24,3 +25,5 @@ register_keyboard = ReplyKeyboardMarkup(
         ]
     ], resize_keyboard=True
 )
+
+
