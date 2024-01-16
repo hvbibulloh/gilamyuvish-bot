@@ -27,3 +27,11 @@ register_keyboard = ReplyKeyboardMarkup(
 )
 
 
+yes_or_no_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton("Ha ✅"),
+            KeyboardButton("Yo'q ⛔ Boshqa maxsulot kiritmayman")
+        ]
+    ], resize_keyboard=True
+)

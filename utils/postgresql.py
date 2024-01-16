@@ -35,3 +35,14 @@ class Database():
         except Exception as e:
             print(f"Error: {e}")
             return None
+
+    def add_zakaz(self, name, boyi, eni, kvadrat, mijoz_id):
+        try:
+            self.cursor.execute(
+                "INSERT INTO zakaz (name, boyi, eni, kvadrat, mijoz_id) VALUES (%s, %s, %s, %s, %s)",
+                (name, boyi, eni, kvadrat, mijoz_id),
+            )
+            self.connection.commit()
+        except Exception as e:
+            print(f"Error: {e}")
+            self.connection.rollback()
