@@ -36,13 +36,26 @@ class Database():
             print(f"Error: {e}")
             return None
 
-    def add_zakaz(self, name, boyi, eni, kvadrat, mijoz_id):
+    def add_zakaz(self, name, boyi, eni, kvadrat, mijoz_id, tayyor=False):
         try:
             self.cursor.execute(
-                "INSERT INTO zakaz (name, boyi, eni, kvadrat, mijoz_id) VALUES (%s, %s, %s, %s, %s)",
-                (name, boyi, eni, kvadrat, mijoz_id),
+                "INSERT INTO zakaz (name, boyi, eni, kvadrat, mijoz_id, tayyor) VALUES (%s, %s, %s, %s, %s, %s)",
+                (name, boyi, eni, kvadrat, mijoz_id, tayyor),
             )
             self.connection.commit()
         except Exception as e:
             print(f"Error: {e}")
             self.connection.rollback()
+
+    def update_mijoz_nomi(self, mijoz_id, yangi_nomi):
+        try:
+            self.cursor.execute(
+                "UPDATE zakaz SET tayyor = %s WHERE mijoz_id = %s",
+                (yangi_nomi, mijoz_id)
+            )
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print(f"Xatolik: {e}")
+            self.connection.rollback()
+            return False

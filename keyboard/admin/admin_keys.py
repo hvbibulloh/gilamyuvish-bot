@@ -12,7 +12,11 @@ ishchilar_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton("Ro'yxatga olish 📝"),
-            KeyboardButton("Yuvish 🚿")
+
+        ],
+        [
+            KeyboardButton("Gilam Yuvish 🚿"),
+            KeyboardButton("Gilam Tayyor ✅")
         ]
     ], resize_keyboard=True
 )
@@ -25,7 +29,6 @@ register_keyboard = ReplyKeyboardMarkup(
         ]
     ], resize_keyboard=True
 )
-
 
 yes_or_no_keyboard = ReplyKeyboardMarkup(
     keyboard=[

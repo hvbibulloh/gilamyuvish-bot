@@ -17,6 +17,43 @@ class YuvishStates(StatesGroup):
     yes = State()
 
 
+class TayyorGilam(StatesGroup):
+    tayyor = State()
+
+
+@dp.message_handler(text="Gilam Tayyor ✅")
+async def tayyor_gilam(message: types.Message):
+    if message.from_user.id in cfg.ISHCHI:
+        await message.answer('Kvitansiya Raqamini kiriting 🛎', reply_markup=admin_exit)
+        await TayyorGilam.tayyor.set()
+
+    else:
+        await message.answer('Siz admin emassiz ⛔')
+
+
+@dp.message_handler(state=TayyorGilam.tayyor, content_types=ContentTypes.TEXT)
+async def tayyor_gilam_now(message: types.Message, state: FSMContext):
+    try:
+        if message.text == 'Chiqish':
+            await message.answer('Bosh menuga Qaytdingiz', reply_markup=ishchilar_keyboard)
+            await state.finish()
+
+
+        else:
+            async with state.proxy() as data:
+                data['id'] = message.text
+
+            db.update_mijoz_nomi(int(data['id']), True)
+
+            await message.answer(f"{data['id']} - Mijozning gilamlari yuvildi ✅", reply_markup=ishchilar_keyboard)
+            await state.finish()
+
+    except Exception as e:
+        print(f"Xatolik: {e}")
+        await message.answer("Xatolik yuz berdi, ma'lumotlar saqlanmadi ⚠️", reply_markup=ishchilar_keyboard)
+        await state.finish()
+
+
 @dp.message_handler(text="Gilam Yuvish 🚿")
 async def yuvish(message: types.Message):
     if message.from_user.id in cfg.ISHCHI:
@@ -31,28 +68,25 @@ async def yuvish(message: types.Message):
 async def yuvish_kvitansiya(message: types.Message, state: FSMContext):
     try:
         kvitansiya_id = int(message.text)
-        kvitansiya = db.get_mijoz(kvitansiya_id)
 
         if message.text == 'Chiqish':
             await message.answer("Bosh menu", reply_markup=ishchilar_keyboard)
             await state.finish()
-
-
-        elif kvitansiya is None:
-            await message.answer("Bunday Kvitansiya raqam mavjud emas ")
-
         elif message.text == '/start':
             await message.answer("Bosh Menu ✅", reply_markup=ishchilar_keyboard)
             await state.finish()
-
         else:
-            async with state.proxy() as data:
-                data['id'] = message.text
-            await message.answer(f"{message.text} kvitansiya maxsulotlari ✅",
-                                 reply_markup=asosiy_button(kvitansiya_id))
-            await YuvishStates.tanlash.set()
-
-
+            kvitansiya = db.get_mijoz(kvitansiya_id)
+            if kvitansiya is None:
+                await message.answer("Bunday Kvitansiya raqam mavjud emas ")
+            else:
+                async with state.proxy() as data:
+                    data['id'] = message.text
+                await message.answer(f"{message.text} kvitansiya maxsulotlari ✅",
+                                     reply_markup=asosiy_button(kvitansiya_id))
+                await YuvishStates.tanlash.set()
+    except ValueError:
+        await message.answer("Noto'g'ri raqam kiritdingiz. Raqam kiriting.")
     except Exception as e:
         await message.answer(f"Xatolik: {e}")
         await state.finish()
@@ -153,4 +187,3 @@ async def yes_or_no(message: types.Message, state: FSMContext):
     except:
         await message.answer("Xatolik", reply_markup=ishchilar_keyboard)
         await state.finish()
-
