@@ -157,7 +157,7 @@ async def eni(message: types.Message, state: FSMContext):
                 nomi = data['gilam']
                 eni = message.text
                 boyi = data['boyi']
-                kvadrati = int(eni) * int(boyi)
+                kvadrati = float(eni) * float(boyi)
                 id = data['id']
 
             db.add_zakaz(nomi, boyi, eni, kvadrati, id)
