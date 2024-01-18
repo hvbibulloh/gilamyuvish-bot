@@ -17,6 +17,16 @@ ishchilar_keyboard = ReplyKeyboardMarkup(
         [
             KeyboardButton("Gilam Yuvish 🚿"),
             KeyboardButton("Gilam Tayyor ✅")
+        ],
+        [
+            KeyboardButton("Hammasini Yuvish 🚿"),
+            KeyboardButton("Hammasi Tayyor ✅")
+        ],
+        [
+            KeyboardButton("Pardozlash 🧴"),
+        ],
+        [
+            KeyboardButton("Tekshirish 🔍")
         ]
     ], resize_keyboard=True
 )
@@ -35,6 +45,15 @@ yes_or_no_keyboard = ReplyKeyboardMarkup(
         [
             KeyboardButton("Ha ✅"),
             KeyboardButton("Yo'q ⛔ Boshqa maxsulot kiritmayman")
+        ]
+    ], resize_keyboard=True
+)
+hammasi_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton("Ko'rpa"),
+            KeyboardButton("Parda"),
+            KeyboardButton("Yostiq")
         ]
     ], resize_keyboard=True
 )

@@ -38,6 +38,9 @@ async def tayyor_gilam_now(message: types.Message, state: FSMContext):
             await message.answer('Bosh menuga Qaytdingiz', reply_markup=ishchilar_keyboard)
             await state.finish()
 
+        elif message.text == '/start':
+            await message.answer('Bosh menuga Qaytdingiz', reply_markup=ishchilar_keyboard)
+            await state.finish()
 
         else:
             async with state.proxy() as data:
@@ -45,8 +48,10 @@ async def tayyor_gilam_now(message: types.Message, state: FSMContext):
 
             db.update_mijoz_nomi(int(data['id']), True)
 
-            await message.answer(f"{data['id']} - Mijozning gilamlari yuvildi ✅", reply_markup=ishchilar_keyboard)
+            await message.answer(f"{data['id']} - Kvitansiya raqamli mijozning gilamlari yuvildi ✅",
+                                 reply_markup=ishchilar_keyboard)
             await state.finish()
+
 
     except Exception as e:
         print(f"Xatolik: {e}")
@@ -67,8 +72,6 @@ async def yuvish(message: types.Message):
 @dp.message_handler(state=YuvishStates.kvitansiya, content_types=types.ContentTypes.TEXT)
 async def yuvish_kvitansiya(message: types.Message, state: FSMContext):
     try:
-        kvitansiya_id = int(message.text)
-
         if message.text == 'Chiqish':
             await message.answer("Bosh menu", reply_markup=ishchilar_keyboard)
             await state.finish()
@@ -76,13 +79,14 @@ async def yuvish_kvitansiya(message: types.Message, state: FSMContext):
             await message.answer("Bosh Menu ✅", reply_markup=ishchilar_keyboard)
             await state.finish()
         else:
+            kvitansiya_id = int(message.text)
             kvitansiya = db.get_mijoz(kvitansiya_id)
             if kvitansiya is None:
                 await message.answer("Bunday Kvitansiya raqam mavjud emas ")
             else:
                 async with state.proxy() as data:
                     data['id'] = message.text
-                await message.answer(f"{message.text} kvitansiya maxsulotlari ✅",
+                await message.answer(f"{message.text} -  kvitansiya maxsulotlari ✅",
                                      reply_markup=asosiy_button(kvitansiya_id))
                 await YuvishStates.tanlash.set()
     except ValueError:

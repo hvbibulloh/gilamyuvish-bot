@@ -1,3 +1,4 @@
+import asyncio
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ContentTypes
@@ -40,7 +41,8 @@ async def full_name(message: types.Message, state: FSMContext):
                 data['full_name'] = message.text
 
             await RegisterStates.phone_number.set()
-            await message.answer("📱 Mijoz telefon raqamini kiriting \n(+998991234567 manashu formatda bo'lsin)!", reply_markup=admin_exit)
+            await message.answer("📱 Mijoz telefon raqamini kiriting \n(+998991234567 manashu formatda bo'lsin)!",
+                                 reply_markup=admin_exit)
 
     except:
         await message.answer("Iltimos text ma'lumot kiriting !", reply_markup=admin_exit)
@@ -205,6 +207,10 @@ async def address(message: types.Message, state: FSMContext):
             db.add_mijoz(fullname, phone_n, gilam, parda, yostiq, korpa, addres)
             await message.answer("Malumotlar saqlandi ✅", reply_markup=ishchilar_keyboard)
             await state.finish()
+
+            await asyncio.sleep(2)
+            mijoz_id = db.get_mijoz_id(phone_n)
+            await message.answer(f"Sizning Kvitansiya raqamingiz 📌: {mijoz_id}")
 
     except Exception as e:
         print(f"Xatolik: {e}")
