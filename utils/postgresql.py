@@ -139,7 +139,6 @@ class Database():
             self.connection.rollback()
             return False
 
-
     def get_check(self, id):
         try:
             self.cursor.execute(
@@ -149,7 +148,7 @@ class Database():
             return result if result else None
         except Exception as e:
             print(f"Error: {e}")
-            return None
+
 
     def get_check_zakaz(self, mijoz_id):
         try:

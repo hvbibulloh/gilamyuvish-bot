@@ -123,10 +123,10 @@ async def korpa_kg(message: types.Message, state: FSMContext):
                 nomi = data['korpa']
                 boyi = None
                 eni = None
-                kvadrati = data['kg'] = message.text
+                kvadrati = message.text
                 id = data['id']
 
-            db.add_zakaz(nomi, boyi, eni, kvadrati, id)
+            db.update_zakaz(boyi, eni, kvadrati, True, nomi, id)
             await message.answer("Boshqa Maxsulotlarni ham qo'shasizmi?", reply_markup=yes_or_no_keyboard)
             await KorpaState.yes.set()
     except:
@@ -238,10 +238,10 @@ async def pardakg(message: types.Message, state: FSMContext):
                 nomi = data['parda']
                 boyi = None
                 eni = None
-                kvadrati = data['kg'] = message.text
+                kvadrati = message.text
                 id = data['id']
 
-            db.add_zakaz(nomi, boyi, eni, kvadrati, id)
+            db.update_zakaz(boyi=boyi, eni=eni, kvadrat=kvadrati, tayyor=True, gilam=nomi, mijoz_id=id)
             await message.answer("Boshqa Maxsulotlarni ham qo'shasizmi?", reply_markup=yes_or_no_keyboard)
             await PardaState.yes.set()
     except:
@@ -357,10 +357,10 @@ async def YOSTIQKG(message: types.Message, state: FSMContext):
                 nomi = data['yostiq']
                 boyi = None
                 eni = None
-                kvadrati = data['kg'] = message.text
+                kvadrati = message.text
                 id = data['id']
 
-            db.add_zakaz(nomi, boyi, eni, kvadrati, id)
+            db.update_zakaz(boyi=boyi, eni=eni, kvadrat=kvadrati, tayyor=True, gilam=nomi, mijoz_id=id)
             await message.answer("Boshqa Maxsulotlarni ham qo'shasizmi?", reply_markup=yes_or_no_keyboard)
             await YostiqState.yes.set()
     except:
@@ -421,10 +421,16 @@ async def hammasi_tayyor_now(message: types.Message, state: FSMContext):
             async with state.proxy() as data:
                 data['id'] = message.text
 
-            db.update_hammasi_tayyor(int(data['id']), True)
-
-            await message.answer(f"{data['id']} - Kvitansiya raqamli mijozning Maxsulotlari yuvildi ✅",
+            if malumot:=db.get_check_zakaz(int(message.text)):
+                sana = 1
+                for i in malumot:
+                    sana *= i[6]
+                if sana:
+                    db.update_hammasi_tayyor(int(data['id']), True)
+                    await message.answer(f"{data['id']} - Kvitansiya raqamli mijozning Maxsulotlari yuvildi ✅",
                                  reply_markup=ishchilar_keyboard)
+                else:
+                    await message.answer("Sizda hammasi tayyor emas isltimos oldin yaxshiab tekshiring",reply_markup=ishchilar_keyboard)
             await state.finish()
 
     except Exception as e:

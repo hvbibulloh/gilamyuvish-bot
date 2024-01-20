@@ -10,7 +10,10 @@ def asosiy_button(id):
     btn.add(orqaga)
 
     for i in range(1, int(buttons) + 1):
-        btn.add(f"Gilam - {i}")
+        if i[6]:
+            btn.add(f"Gilam - {i} ✅")
+        else:
+            btn.add(f"Gilam - {i} ✅")
     return btn
 
 

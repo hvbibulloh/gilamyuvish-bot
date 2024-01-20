@@ -79,15 +79,14 @@ async def yuvish_kvitansiya(message: types.Message, state: FSMContext):
             await message.answer("Bosh Menu ✅", reply_markup=ishchilar_keyboard)
             await state.finish()
         else:
-            kvitansiya_id = int(message.text)
-            kvitansiya = db.get_mijoz(kvitansiya_id)
+            kvitansiya = db.get_mijoz(int(message.text))
             if kvitansiya is None:
                 await message.answer("Bunday Kvitansiya raqam mavjud emas ")
             else:
                 async with state.proxy() as data:
                     data['id'] = message.text
                 await message.answer(f"{message.text} -  kvitansiya maxsulotlari ✅",
-                                     reply_markup=asosiy_button(kvitansiya_id))
+                                     reply_markup=asosiy_button(int(message.text)))
                 await YuvishStates.tanlash.set()
     except ValueError:
         await message.answer("Noto'g'ri raqam kiritdingiz. Raqam kiriting.")
