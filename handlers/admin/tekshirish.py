@@ -37,18 +37,19 @@ async def check_kv(message: types.Message, state: FSMContext):
         else:
             async with state.proxy() as data:
                 data['id'] = message.text
-
-            mijoz_check = db.get_check(int(data['id']))
-            zakaz_check = db.get_check_zakaz(int(data['id']))
+            if message.text.isdigit():
+                mijoz_check = db.get_check(int(data['id']))
+                zakaz_check = db.get_check_zakaz(int(data['id']))
 
             if mijoz_check is None:
                 await message.answer("Bunday Kvitansiya raqam mavjud emas ")
             else:
                 # Mijoz ma'lumotlari
-                await message.answer(f"Mijoz: {mijoz_check}")
+                await message.answer(f"Mijoz Malumotlari!\nID: <b>{mijoz_check[0]}</b>\nIsm: <b>{mijoz_check[1]}</b>\nTelefon: <b>{mijoz_check[2]}</b>\nAddress: <b>{mijoz_check[7]}</b>\n\n")
 
                 if zakaz_check:
-                    await message.answer("Mijozning zakazlari:")
+                    await message.answer("<b>Mijozning zakazlari!</b>")
+                    print(zakaz_check)
                     for zakaz in zakaz_check:
                         await message.answer(f"Zakaz: {zakaz}")
                 else:

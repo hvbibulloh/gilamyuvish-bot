@@ -159,8 +159,7 @@ async def eni(message: types.Message, state: FSMContext):
                 boyi = data['boyi']
                 kvadrati = float(eni) * float(boyi)
                 id = data['id']
-
-            db.add_zakaz(nomi, boyi, eni, kvadrati, id)
+                db.update_zakaz(boyi=boyi, eni=eni, kvadrat=kvadrati, tayyor=True, gilam=nomi, mijoz_id=id)
             await message.answer("Boshqa maxsulotlarni ham qo'shasizmi?", reply_markup=yes_or_no_keyboard)
             await YuvishStates.yes.set()
 
