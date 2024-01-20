@@ -80,7 +80,7 @@ class Database():
             print(f"Error: {e}")
             return None
 
-    def add_zakaz(self, name, boyi, eni, kvadrat, mijoz_id, tayyor=False, hammasi_tayyor=False):
+    def add_zakaz(self, name, mijoz_id, boyi=None, eni=None, kvadrat=None, tayyor=False, hammasi_tayyor=False):
         try:
             self.cursor.execute(
                 "INSERT INTO zakaz (name, boyi, eni, kvadrat, mijoz_id, tayyor, hammasi_tayyor) VALUES (%s, %s, %s, %s, %s, %s, %s)",
@@ -90,6 +90,15 @@ class Database():
         except Exception as e:
             print(f"Error: {e}")
             self.connection.rollback()
+
+    def update_zakaz(self, boyi, eni, kvadrat, tayyor, gilam, mijoz_id):
+        try:
+            self.cursor.execute(
+                "UPDATE zakaz SET boyi = %s, eni = %s, kvadrat = %s, tayyor = %s where name = %s AND mijoz_id = %s", (str(boyi), str(eni), str(kvadrat), tayyor, str(gilam), int(mijoz_id))
+            )
+            self.connection.commit()
+        except Exception as e:
+            print("Error: ", e)
 
     def update_mijoz_nomi(self, mijoz_id, yangi_nomi):
         try:
@@ -137,7 +146,7 @@ class Database():
                 "SELECT * FROM mijoz WHERE id = %s", (id,)
             )
             result = self.cursor.fetchone()
-            return result[0] if result else None
+            return result if result else None
         except Exception as e:
             print(f"Error: {e}")
             return None
@@ -147,8 +156,8 @@ class Database():
             self.cursor.execute(
                 "SELECT * FROM zakaz WHERE mijoz_id = %s", (mijoz_id,)
             )
-            result = self.cursor.fetchone()
-            return result[0] if result else None
+            result = self.cursor.fetchall()
+            return result if result else None
         except Exception as e:
             print(f"Error: {e}")
             return None

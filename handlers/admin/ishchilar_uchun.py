@@ -210,6 +210,14 @@ async def address(message: types.Message, state: FSMContext):
 
             await asyncio.sleep(2)
             mijoz_id = db.get_mijoz_id(phone_n)
+            for i in range(1, int(gilam)+1):
+                db.add_zakaz(name=f"Gilam - {i}", mijoz_id=mijoz_id)
+            for i in range(1, int(parda)+1):
+                db.add_zakaz(name=f"Parda - {i}", mijoz_id=mijoz_id)
+            for i in range(1, int(yostiq)+1):
+                db.add_zakaz(name=f"Yostiq - {i}", mijoz_id=mijoz_id)
+            for i in range(1, int(korpa)+1):
+                db.add_zakaz(name=f"Korpa - {i}", mijoz_id=mijoz_id)
             await message.answer(f"Sizning Kvitansiya raqamingiz 📌: {mijoz_id}")
 
     except Exception as e:
